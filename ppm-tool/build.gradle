@@ -2,6 +2,11 @@ plugins {
     id 'org.springframework.boot' version '2.2.6.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
+    id 'com.moowork.node' version '1.3.1'
+}
+
+ext{
+    reactDir = "$projectDir/webapp"
 }
 
 group = 'com.viz-ai'
@@ -33,3 +38,61 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+jar{
+    from('webapp/dist'){
+        into 'public'
+    }
+}
+
+node{
+    nodeModulesDir = file(reactDir)
+    download = false
+}
+
+task compileReact(type: NpmTask, dependsOn: npmInstall){
+    def inputFiles = project.fileTree(dir: "${reactDir}")
+    inputs.files(inputFiles)
+
+    def outputFile = "${reactDir}/build"
+    outputs.dir outputFile
+
+    group 'build'
+    description = 'Compile react'
+    args = ['run', 'build']
+}
+
+task copyReact(type: Copy, dependsOn: compileReact){
+    def inputFiles = project.fileTree(dir: "${reactDir}/build")
+    inputs.files(inputFiles)
+
+    def outputFile = "${projectDir}/src/main/resources/static/"
+    outputs.dir outputFile
+
+    from "${reactDir}/build"
+    into "${projectDir}/src/main/resources/static"
+}
+
+tasks.processResources.dependsOn(copyReact)
+
+task testReact(type: NpmTask, dependsOn: npmInstall){
+    def inputFiles = project.fileTree(dir: "${reactDir}")
+    inputs.files(inputFiles)
+
+    def outputFile = "${reactDir}/coverage"
+    outputs.dir outputFile
+
+    group 'verification'
+    description = 'run npm test'
+    args = ['run', 'test']
+}
+
+tasks.check.dependsOn(testReact)
+
+task installCustom(type: NpmTask){
+    args = ['install', '--save', 'font-awesome']
+}
+
+
+
+
