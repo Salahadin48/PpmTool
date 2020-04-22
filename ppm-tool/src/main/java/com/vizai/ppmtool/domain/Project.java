@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,22 +23,22 @@ public class Project {
     @NotBlank(message = "Project description is required.")
     private String projectDescription;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime projectStartDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd", iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate projectStartDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime projectEndDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd", iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate projectEndDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime createdAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd", iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate createdAt;
 
     //@JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime updatedAt;
+    @DateTimeFormat(pattern = "yyyy-MM-dd", iso = DateTimeFormat.ISO.DATE_TIME)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private LocalDate updatedAt;
 
     public Project(){
 
@@ -75,45 +76,45 @@ public class Project {
         this.projectDescription = projectDescription;
     }
 
-    public LocalDateTime getProjectStartDate() {
+    public LocalDate getProjectStartDate() {
         return projectStartDate;
     }
 
-    public void setProjectStartDate(LocalDateTime projectStartDate) {
+    public void setProjectStartDate(LocalDate projectStartDate) {
         this.projectStartDate = projectStartDate;
     }
 
-    public LocalDateTime getProjectEndDate() {
+    public LocalDate getProjectEndDate() {
         return projectEndDate;
     }
 
-    public void setProjectEndDate(LocalDateTime projectEndDate) {
+    public void setProjectEndDate(LocalDate projectEndDate) {
         this.projectEndDate = projectEndDate;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public LocalDate getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(LocalDate createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getUpdatedAt() {
+    public LocalDate getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(LocalDateTime updatedAt) {
+    public void setUpdatedAt(LocalDate updatedAt) {
         this.updatedAt = updatedAt;
     }
 
     @PrePersist
     protected void onCreate(){
-        this.createdAt = LocalDateTime.now();
+        this.createdAt = LocalDate.now();
     }
 
     @PreUpdate
     protected void onUpdate(){
-        this.updatedAt = LocalDateTime.now();
+        this.updatedAt = LocalDate.now();
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -15,7 +16,7 @@ public class ValidationServiceImpl {
     public ResponseEntity<?> validate(BindingResult result) {
 
         List<FieldError> errors = result.getFieldErrors();
-        Map<String, String> errorMap = errors.stream().collect(Collectors.toMap(e -> e.getField(), e -> e.getDefaultMessage()));
+        Map<String, String> errorMap = errors.stream().collect(Collectors.toMap(e -> e.getField(), e -> e.getDefaultMessage(), (k, v) -> v, LinkedHashMap::new));
         if (result.hasErrors()) return new ResponseEntity<Map<String, String>>(errorMap, HttpStatus.BAD_REQUEST);
         return null;
     }
